@@ -1,0 +1,6 @@
+{
+  "name": "LLM Response Comparator",
+  "description": "An application to compare responses from multiple Large Language Models (LLMs) side-by-side. Enter a prompt and see what Gemini and other leading AI models have to say.",
+  "requestFramePermissions": [],
+  "prompt": ""
+}
