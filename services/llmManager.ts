@@ -1,5 +1,6 @@
 import { LLM, LLMClient, SynthesizerResponse } from '../types';
 import { GeminiClient } from './geminiService';
+import { PerplexityClient } from './perplexityService';
 import { createDynamicMockClient } from './mockLlmService';
 
 class LLMManager {
@@ -25,6 +26,23 @@ class LLMManager {
         this.geminiClient,
         "You are acting as a helpful assistant named Copilot. You specialize in code generation, completion, and explanation. If the prompt is about code, provide code examples. Otherwise, answer concisely and efficiently, focusing on technical accuracy."
     ));
+    
+    // Perplexity Client: Use real API if key is provided, otherwise fallback to mock
+    if (process.env.PERPLEXITY_API_KEY) {
+        try {
+            this.clients.set(LLM.Perplexity, new PerplexityClient());
+            console.log("Initialized real Perplexity client.");
+        } catch (error) {
+            console.error("Failed to initialize PerplexityClient, falling back to mock:", error);
+            this.registerMockPerplexity();
+        }
+    } else {
+        console.log("PERPLEXITY_API_KEY not found, using mock Perplexity client.");
+        this.registerMockPerplexity();
+    }
+  }
+
+  private registerMockPerplexity(): void {
     this.clients.set(LLM.Perplexity, createDynamicMockClient(
         this.geminiClient,
         "You are acting as a conversational search engine named Perplexity. Provide direct, accurate, and factual answers. Keep responses concise and to the point. Mimic providing citations, but do not make up URLs unless you can verify them."
