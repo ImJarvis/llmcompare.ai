@@ -28,7 +28,7 @@ class LLMManager {
     ));
     
     // Perplexity Client: Use real API if key is provided, otherwise fallback to mock
-   /* if (process.env.PERPLEXITY_API_KEY) {
+   if (process.env.PERPLEXITY_API_KEY) {
         try {
             this.clients.set(LLM.Perplexity, new PerplexityClient());
             console.log("Initialized real Perplexity client.");
@@ -36,7 +36,7 @@ class LLMManager {
             console.error("Failed to initialize PerplexityClient, falling back to mock:", error);
             this.registerMockPerplexity();
         }
-    } else {
+    } /*else {
         console.log("PERPLEXITY_API_KEY not found, using mock Perplexity client.");
         this.registerMockPerplexity();
     }*/
