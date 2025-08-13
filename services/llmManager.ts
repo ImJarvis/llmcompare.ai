@@ -36,10 +36,10 @@ class LLMManager {
             console.error("Failed to initialize PerplexityClient, falling back to mock:", error);
             this.registerMockPerplexity();
         }
-    } /*else {
+    } else {
         console.log("PERPLEXITY_API_KEY not found, using mock Perplexity client.");
         this.registerMockPerplexity();
-    }*/
+    }
   }
 
   private registerMockPerplexity(): void {
