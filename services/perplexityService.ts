@@ -44,7 +44,7 @@ export class PerplexityClient implements LLMClient {
 
   async generateResponse(prompt: string): Promise<string> {
     const requestBody: PerplexityChatCompletionRequest = {
-      model: 'llama-3-sonar-small-32k-online', // A capable, online-enabled model from Perplexity
+      model: 'sonar-pro', // A capable, online-enabled model from Perplexity
       messages: [
         { role: 'user', content: prompt },
       ],
