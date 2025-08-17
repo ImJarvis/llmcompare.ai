@@ -36,13 +36,19 @@ export class PerplexityClient implements LLMClient {
   private readonly apiUrl = 'https://api.perplexity.ai/chat/completions';
 
   constructor() {
+    // API key check is moved to generateResponse to avoid crashing on startup
+    // and to align with GeminiClient's behavior. This helps debugging deployment issues.
     if (!process.env.PERPLEXITY_API_KEY) {
-      throw new Error("PERPLEXITY_API_KEY environment variable not set.");
+      console.error("PERPLEXITY_API_KEY environment variable not set.");
     }
-    this.apiKey = process.env.PERPLEXITY_API_KEY;
+    this.apiKey = process.env.PERPLEXITY_API_KEY || '';
   }
 
   async generateResponse(prompt: string): Promise<string> {
+    if (!this.apiKey) {
+      return Promise.reject(new Error("Perplexity API Key is not configured."));
+    }
+    
     const requestBody: PerplexityChatCompletionRequest = {
       model: 'sonar-pro', // A capable, online-enabled model from Perplexity
       messages: [
