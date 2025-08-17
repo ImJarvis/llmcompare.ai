@@ -38,7 +38,7 @@ export class PerplexityClient implements LLMClient {
   constructor() {
     // API key check is moved to generateResponse to avoid crashing on startup
     // and to align with GeminiClient's behavior. This helps debugging deployment issues.
-    if (!process.env.PERPLEXITY_API_KEY) {
+    if (!process.env.VITE_PERPLEXITY_API_KEY) {
       console.error("PERPLEXITY_API_KEY environment variable not set.");
     }
     this.apiKey = process.env.PERPLEXITY_API_KEY || '';
