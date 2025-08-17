@@ -1,5 +1,6 @@
 import { LLM, LLMClient, SynthesizerResponse } from '../types';
 import { GeminiClient } from './geminiService';
+import { PerplexityClient } from './perplexityService';
 import { createDynamicMockClient } from './mockLlmService';
 
 class LLMManager {
@@ -27,11 +28,8 @@ class LLMManager {
         "You are acting as a helpful assistant named Copilot. You specialize in code generation, completion, and explanation. If the prompt is about code, provide code examples. Otherwise, answer concisely and efficiently, focusing on technical accuracy."
     ));
     
-    // Simulate Perplexity using the Gemini client to avoid client-side API key issues.
-    this.clients.set(LLM.Perplexity, createDynamicMockClient(
-        this.geminiClient,
-        "You are acting as a helpful assistant named Perplexity. You are a conversational answer engine. Provide answers that are accurate, concise, and straight to the point. Focus on delivering factual information directly."
-    ));
+    // Real Perplexity Client - requires VITE_PERPLEXITY_API_KEY to be set in the environment.
+    this.clients.set(LLM.Perplexity, new PerplexityClient());
   }
 
   public getClient(model: LLM): LLMClient | undefined {
