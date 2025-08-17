@@ -8,6 +8,7 @@ class LLMManager {
   private geminiClient: GeminiClient;
 
   constructor() {
+    console.log('Initializing LLMManager...');
     this.clients = new Map();
     this.geminiClient = new GeminiClient();
     this.registerClients();
@@ -27,18 +28,11 @@ class LLMManager {
         "You are acting as a helpful assistant named Copilot. You specialize in code generation, completion, and explanation. If the prompt is about code, provide code examples. Otherwise, answer concisely and efficiently, focusing on technical accuracy."
     ));
     
-    // Perplexity Client: Use real API if key is provided, otherwise use a mock.
-    // If the key is provided but invalid, the error will now propagate to the UI for easier debugging, instead of falling back to the mock.
-    if (process.env.PERPLEXITY_API_KEY) {
-        this.clients.set(LLM.Perplexity, new PerplexityClient());
-        console.log("PERPLEXITY_API_KEY found. Initializing real Perplexity client.");
-    } else {
-        console.log("PERPLEXITY_API_KEY not found, using mock Perplexity client.");
-        this.clients.set(LLM.Perplexity, createDynamicMockClient(
-            this.geminiClient,
-            "You are acting as a conversational search engine named Perplexity. Provide direct, accurate, and factual answers. Keep responses concise and to the point. Mimic providing citations, but do not make up URLs unless you can verify them."
-        ));
-    }
+    // Perplexity Client: Always initialize the real client.
+    // If the PERPLEXITY_API_KEY environment variable is not available at runtime,
+    // the request will fail and an error message will be displayed in the UI.
+    // This aligns its behavior with the Gemini client and aids in debugging deployment issues.
+    this.clients.set(LLM.Perplexity, new PerplexityClient());
   }
 
   public getClient(model: LLM): LLMClient | undefined {
